@@ -27,7 +27,10 @@ router.get('/:id', async (req, res) => {
       {
         model: Category,
       },
-      // Add tags too
+      {
+        model: Tag,
+        through: ProductTag
+      }
     ],
   });
   res.json(product);
