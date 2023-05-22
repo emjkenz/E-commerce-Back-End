@@ -40,12 +40,14 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
-  Tag.update(req.body, {
+  const updated = Object.keys(req.body).length > 0 ? req.body : req.query;
+
+  Tag.update(updated, {
     where: {
       id: req.params.id
     }
   });
-    
+  res.status(200).json({ status: 'success' });
 });
 
 router.delete('/:id', (req, res) => {
