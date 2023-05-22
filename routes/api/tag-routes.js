@@ -30,10 +30,22 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new tag
+  const create = Object.keys(req.body).length > 0 ? req.body : req.query;
+
+  Tag.create(create)
+    .then((tag) => {
+      res.json(tag);
+    });
 });
 
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
+  Tag.update(req.body, {
+    where: {
+      id: req.params.id
+    }
+  });
+    
 });
 
 router.delete('/:id', (req, res) => {
