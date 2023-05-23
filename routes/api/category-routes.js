@@ -3,48 +3,59 @@ const { Category, Product } = require('../../models');
 
 // The `/api/categories` endpoint
 
-router.get('/', async(req, res) => {
+router.get('/', (req, res) => {
   // find all categories
   // be sure to include its associated Products
-  const categories = await Category.findAll({
+  Category.findAll({
     include: {
       model: Product
     }
+  }).then((categories) => {
+    res.json(categories);
   });
-  res.json(categories);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', (req, res) => {
   // find one category by its `id` value
   // be sure to include its associated Products
-  const products = await Product.findAll({
+  Product.findAll({
     where: {
       category_id: req.params.id
     }
+  }).then((products) => {
+    res.json(products);
   });
-  res.json(products);
 });
 
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
   // create a new category
   const create = Object.keys(req.body).length > 0 ? req.body : req.query;
 
+  if (!create.category_name) {
+    // Return error if category already exists
+    res.json({ status: "error", message: "Category name is required" });
+    return;
+  }
+
   // If id is provided, check if it exists
   if (create.id) {
-    const cat = await Category.findOne({
+    Category.findOne({
       where: {
         id: create.id
       }
+    }).then((cat) => {
+      if (cat) {
+        // Return error if category already exists
+        res.json({ status: "error", message: "Category already exists" });
+        return;
+      }
     });
-
-    if (cat) {
-      res.json({ status: "error", message: "Category already exists" });
-      return;
-    }
   }
-
-  Category.create(create);
-  res.json({ status: "success" });
+  else {
+    // If no error occurs then create category
+    Category.create(create);
+    res.json({ status: "success" });
+  }
 });
 
 router.put('/:id', (req, res) => {
