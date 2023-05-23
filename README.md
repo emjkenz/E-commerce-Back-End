@@ -53,4 +53,4 @@ npm run watch
 
  ## Usage
 
- See example video on how to use it: ![Video](https://drive.google.com/file/d/1pWze1yOsdaymi8qBOef6wD3b2hXhsfiN/view)
+ See example video on how to use it: [Video](https://drive.google.com/file/d/1pWze1yOsdaymi8qBOef6wD3b2hXhsfiN/view)
